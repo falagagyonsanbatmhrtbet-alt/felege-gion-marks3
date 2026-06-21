@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Felege Gion Sunday School - Bulk Mark Entry</title>
+    <title>Felege Gion Sunday School Portal</title>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -17,349 +17,331 @@
             --border: #e2e8f0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 1.5rem;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 0.5rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1400px; display: flex; flex-direction: column; gap: 1rem; }
+        
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            color: white; padding: 1rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 1rem;
         }
 
-        header h1 { font-size: 1.6rem; font-weight: 600; }
-        header p { font-size: 0.9rem; opacity: 0.8; margin-top: 0.25rem; }
+        .logo-img {
+            width: 60px; height: 60px; border-radius: 50%;
+            background-color: white; object-fit: cover; border: 2px solid white;
+        }
+
+        .header-text h1 { font-size: 1.3rem; font-weight: 600; }
+        .header-text p { font-size: 0.8rem; opacity: 0.8; margin-top: 0.15rem; }
 
         .card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background: var(--card-bg); padding: 1rem; border-radius: 8px;
+            border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .card h2 {
-            font-size: 1.2rem;
+        h2 { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--secondary); border-bottom: 2px solid var(--border); padding-bottom: 0.25rem; }
+        
+        .config-panel { margin-bottom: 1rem; background: #f1f5f9; padding: 0.75rem; border-radius: 6px; max-width: 260px; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--secondary); }
+        select { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; background: white; }
+
+        /* Optimized Spreadsheet Wrapper */
+        .spreadsheet-wrapper {
+            overflow-x: auto;
             margin-bottom: 1rem;
-            color: var(--secondary);
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        /* Bulk Entry Layout */
+        /* Matrix Grid Configuration with Fixed Input Box Widths */
         .bulk-header-row {
-            display: grid;
-            grid-template-columns: 2.5fr 1.2fr 1.2fr 1fr;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-            padding: 0 0.5rem;
-            font-weight: bold;
-            font-size: 0.85rem;
-            color: var(--secondary);
+            display: grid; 
+            grid-template-columns: minmax(160px, 2fr) repeat(6, 50px) 55px 40px; 
+            gap: 0.35rem; margin-bottom: 0.4rem; padding: 0 0.25rem; font-weight: bold; font-size: 0.75rem; text-align: center;
+            align-items: end; min-width: 560px;
         }
 
         .student-row {
-            display: grid;
-            grid-template-columns: 2.5fr 1.2fr 1.2fr 1fr;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            background: var(--bg);
-            padding: 0.5rem;
-            border-radius: 8px;
-            align-items: center;
+            display: grid; 
+            grid-template-columns: minmax(160px, 2fr) repeat(6, 50px) 55px 40px; 
+            gap: 0.35rem; margin-bottom: 0.5rem; background: var(--bg); padding: 0.35rem; border-radius: 6px; align-items: center;
+            min-width: 560px;
         }
 
-        input {
-            width: 100%;
-            padding: 0.6rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.95rem;
-            outline: none;
-            background: white;
-        }
+        input { width: 100%; padding: 0.4rem 0.2rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; text-align: center; }
+        input.input-name { text-align: left; padding-left: 0.5rem; }
+        input:focus { border-color: var(--accent); outline: none; background-color: #fff; }
 
-        input:focus {
-            border-color: var(--accent);
-        }
-
-        .calculated-total {
-            font-weight: bold;
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        .actions-bar {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        button {
-            flex: 1;
-            padding: 0.75rem;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: background 0.2s;
-        }
-
-        .btn-primary { background-color: var(--accent); color: white; }
-        .btn-primary:hover { background-color: #1d4ed8; }
+        .calculated-total { font-weight: bold; text-align: center; font-size: 0.85rem; }
+        .actions-bar { display: flex; gap: 0.75rem; margin-top: 1rem; }
         
-        .btn-secondary { background-color: #64748b; color: white; }
-        .btn-secondary:hover { background-color: #475569; }
+        button { padding: 0.6rem; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
+        .btn-primary { flex: 2; background-color: var(--accent); color: white; }
+        .btn-secondary { flex: 1; background-color: #64748b; color: white; }
+        
+        .btn-remove { background-color: transparent; color: var(--danger); font-size: 1rem; cursor: pointer; display: inline-block; width: 100%; }
 
-        /* Output Table Styles */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.9rem;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background-color: var(--bg);
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .badge {
-            font-weight: bold;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
+        .table-container { overflow-x: auto; margin-top: 1rem; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; min-width: 650px; }
+        th, td { padding: 0.5rem 0.35rem; border-bottom: 1px solid var(--border); text-align: center; }
+        th.text-left, td.text-left { text-align: left; }
+        th { background-color: var(--bg); color: var(--secondary); }
+        
+        .badge { font-weight: bold; padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.7rem; }
         .badge.pass { color: var(--success); background: #f0fdf4; }
         .badge.fail { color: var(--danger); background: #fef2f2; }
-
-        .empty-state {
-            text-align: center;
-            color: #94a3b8;
-            padding: 2rem;
-        }
+        .empty-state { text-align: center; color: #94a3b8; padding: 1.5rem; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>Felege Gion Sunday School</h1>
-        <p>Bulk Student Mark Entry Sheet (EXCEL Style Portal)</p>
+        <img src="logo.jpg" alt="Sunday School Logo" class="logo-img" onerror="this.style.display='none'">
+        <div class="header-text">
+            <h1>Felege Gion Sunday School</h1>
+            <p>Official Digital Mark Registration Ledger</p>
+        </div>
     </header>
 
     <div class="card">
-        <h2>Enter Student Marks (Batch Sheet)</h2>
-        
-        <div class="bulk-header-row">
-            <div>Student Full Name</div>
-            <div>Assessment (Max 40)</div>
-            <div>Final Exam (Max 60)</div>
-            <div style="text-align: center;">Live Total (100)</div>
+        <h2>1. Class Selection</h2>
+        <div class="config-panel">
+            <label for="gradeSelect">Grade Level / ክፍል</label>
+            <select id="gradeSelect">
+                <option value="Grade 1">Grade 1</option>
+                <option value="Grade 2">Grade 2</option>
+                <option value="Grade 3">Grade 3</option>
+                <option value="Grade 4">Grade 4</option>
+                <option value="Grade 5">Grade 5</option>
+                <option value="Grade 6">Grade 6</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+                <option value="Grade 9">Grade 9</option>
+                <option value="Grade 10">Grade 10</option>
+                <option value="Grade 11">Grade 11</option>
+                <option value="Grade 12">Grade 12</option>
+            </select>
         </div>
 
+        <h2>2. Roster Mark Sheet Entry</h2>
         <form id="bulkMarkForm">
-            <div id="bulkRowsContainer">
+            <div class="spreadsheet-wrapper">
+                <div class="bulk-header-row">
+                    <div style="text-align: left;">Student Name</div>
+                    <div>Taste<br>10%</div>
+                    <div>Asgn<br>10%</div>
+                    <div>Book<br>5%</div>
+                    <div>Att<br>10%</div>
+                    <div>Mid<br>25%</div>
+                    <div>Fin<br>40%</div>
+                    <div>Total<br>100%</div>
+                    <div>Rem</div>
                 </div>
-
+                <div id="bulkRowsContainer"></div>
+            </div>
             <div class="actions-bar">
-                <button type="button" class="btn-secondary" id="addMoreRowsBtn">+ Add 5 More Rows</button>
-                <button type="submit" class="btn-primary">Process & Lock All Records</button>
+                <button type="button" class="btn-secondary" id="addMoreRowsBtn">+ Add 5 Rows</button>
+                <button type="submit" class="btn-primary" id="submitBtn">Save Marks to Firebase Cloud</button>
             </div>
         </form>
     </div>
 
     <div class="card table-container">
-        <h2>Saved Master Ledger Logs</h2>
+        <h2>Cloud Storage Master Ledger Log</h2>
         <table id="masterRecordsTable">
             <thead>
                 <tr>
-                    <th>Student Name</th>
-                    <th>Assessment (40)</th>
-                    <th>Final Exam (60)</th>
+                    <th>Grade</th>
+                    <th class="text-left">Student Name</th>
+                    <th>Taste (10)</th>
+                    <th>Assign (10)</th>
+                    <th>Book (5)</th>
+                    <th>Atten (10)</th>
+                    <th>Mid (25)</th>
+                    <th>Final (40)</th>
                     <th>Total (100)</th>
-                    <th>Result Outcome</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody id="masterTableBody">
-                <tr>
-                    <td colspan="5" class="empty-state">No permanently saved records in ledger yet. Process form above.</td>
-                </tr>
+                <tr><td colspan="10" class="empty-state">Loading database records...</td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+    // Your integrated Firebase web credentials
+    const firebaseConfig = {
+        apiKey: "AIzaSyB4FdrgFQop1WvubMDhANtUcrHWnQ-kWf4",
+        authDomain: "sundayschoolportal-a0931.firebaseapp.com",
+        projectId: "sundayschoolportal-a0931",
+        storageBucket: "sundayschoolportal-a0931.firebasestorage.app",
+        messagingSenderId: "964240028485",
+        appId: "1:964240028485:web:655a48afc5bdad0fdbc42c",
+        measurementId: "G-8TNMKQ8LJ9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const analytics = getAnalytics(app);
+
     const container = document.getElementById('bulkRowsContainer');
     const addRowsBtn = document.getElementById('addMoreRowsBtn');
     const form = document.getElementById('bulkMarkForm');
     const masterTableBody = document.getElementById('masterTableBody');
+    const gradeSelect = document.getElementById('gradeSelect');
 
-    let totalRowCount = 0;
-    let masterLedger = [];
-
-    // Generates Entry Rows directly inside the UI
     function createEntryRows(count) {
         for (let i = 0; i < count; i++) {
-            totalRowCount++;
             const row = document.createElement('div');
             row.className = 'student-row';
             row.innerHTML = `
-                <div>
-                    <input type="text" class="input-name" placeholder="Student Name ${totalRowCount}">
-                </div>
-                <div>
-                    <input type="number" class="input-assess" min="0" max="40" step="0.5" placeholder="0 - 40">
-                </div>
-                <div>
-                    <input type="number" class="input-final" min="0" max="60" step="0.5" placeholder="0 - 60">
-                </div>
-                <div class="calculated-total" id="total-row-${totalRowCount}">0.0</div>
+                <div><input type="text" class="input-name" placeholder="Full Name"></div>
+                <div><input type="number" class="input-taste" min="0" max="10" step="0.5" placeholder="10"></div>
+                <div><input type="number" class="input-assign" min="0" max="10" step="0.5" placeholder="10"></div>
+                <div><input type="number" class="input-book" min="0" max="5" step="0.5" placeholder="5"></div>
+                <div><input type="number" class="input-atten" min="0" max="10" step="0.5" placeholder="10"></div>
+                <div><input type="number" class="input-mid" min="0" max="25" step="0.5" placeholder="25"></div>
+                <div><input type="number" class="input-final" min="0" max="40" step="0.5" placeholder="40"></div>
+                <div class="calculated-total">0.0</div>
+                <div style="text-align: center;"><button type="button" class="btn-remove" title="Subtract row">✖</button></div>
             `;
             container.appendChild(row);
 
-            // Real-Time Event Math Listeners per Row (Like Excel cells)
-            const assessInput = row.querySelector('.input-assess');
-            const finalInput = row.querySelector('.input-final');
+            const inputs = row.querySelectorAll('input[type="number"]');
             const totalDisplay = row.querySelector('.calculated-total');
+            const removeBtn = row.querySelector('.btn-remove');
 
-            function calculateRowTotal() {
-                const assessVal = parseFloat(assessInput.value) || 0;
-                const finalVal = parseFloat(finalInput.value) || 0;
-                const sum = assessVal + finalVal;
-                totalDisplay.textContent = sum.toFixed(1);
-                
-                if (sum >= 50) {
-                    totalDisplay.style.color = 'var(--success)';
-                } else if (sum > 0) {
-                    totalDisplay.style.color = 'var(--danger)';
-                } else {
-                    totalDisplay.style.color = 'var(--text)';
-                }
+            function calculateRow() {
+                let total = 0;
+                inputs.forEach(input => {
+                    total += parseFloat(input.value) || 0;
+                });
+                totalDisplay.textContent = total.toFixed(1);
+                totalDisplay.style.color = total >= 50 ? 'var(--success)' : (total > 0 ? 'var(--danger)' : 'var(--text)');
             }
 
-            assessInput.addEventListener('input', calculateRowTotal);
-            finalInput.addEventListener('input', calculateRowTotal);
+            inputs.forEach(input => input.addEventListener('input', calculateRow));
+            removeBtn.addEventListener('click', () => { row.remove(); });
         }
     }
 
-    // Initialize with 10 blank student rows immediately
     createEntryRows(10);
-
-    // Expand form dynamically
     addRowsBtn.addEventListener('click', () => createEntryRows(5));
 
-    // Handle full batch submission 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+    async function fetchFromCloud() {
+        try {
+            const q = query(collection(db, "sunday_school_marks"), orderBy("timestamp", "desc"));
+            const querySnapshot = await getDocs(q);
+            if(querySnapshot.empty) {
+                masterTableBody.innerHTML = `<tr><td colspan="10" class="empty-state">No records saved in database yet.</td></tr>`;
+                return;
+            }
+            
+            let output = "";
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                output += `
+                    <tr>
+                        <td><strong>${data.grade}</strong></td>
+                        <td class="text-left">${data.name}</td>
+                        <td>${data.taste}</td>
+                        <td>${data.assignment}</td>
+                        <td>${data.bookMark}</td>
+                        <td>${data.attendance}</td>
+                        <td>${data.midExam}</td>
+                        <td>${data.finalExam}</td>
+                        <td><strong>${data.totalScore}</strong></td>
+                        <td><span class="badge ${data.status.toLowerCase()}">${data.status}</span></td>
+                    </tr>
+                `;
+            });
+            masterTableBody.innerHTML = output;
+        } catch (e) {
+            console.error(e);
+            masterTableBody.innerHTML = `<tr><td colspan="10" class="empty-state" style="color:var(--danger)">Failed to synchronize cloud ledger data. Make sure rules are set to test mode.</td></tr>`;
+        }
+    }
 
+    fetchFromCloud();
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
         const rows = container.querySelectorAll('.student-row');
-        let newRecords = [];
-        let validationFailed = false;
+        const selectedGrade = gradeSelect.value;
+        let uploadQueue = [];
+        let validationError = false;
 
         rows.forEach(row => {
             const name = row.querySelector('.input-name').value.trim();
-            const assessRaw = row.querySelector('.input-assess').value;
-            const finalRaw = row.querySelector('.input-final').value;
+            const taste = row.querySelector('.input-taste').value;
+            const assign = row.querySelector('.input-assign').value;
+            const book = row.querySelector('.input-book').value;
+            const atten = row.querySelector('.input-atten').value;
+            const mid = row.querySelector('.input-mid').value;
+            const final = row.querySelector('.input-final').value;
 
-            // Skip row if it is entirely empty
-            if (!name && !assessRaw && !finalRaw) return;
+            if (!name && taste==='' && assign==='' && book==='' && atten==='' && mid==='' && final==='') return;
 
-            // If name or marks are partially filled, flag it 
-            if (!name || assessRaw === '' || finalRaw === '') {
-                alert("Error: Please make sure fields are completed fully for rows with data.");
-                validationFailed = true;
+            if (!name || taste==='' || assign==='' || book==='' || atten==='' || mid==='' || final==='') {
+                alert("Error: Please fully complete or subtract incomplete records using the ✖ option.");
+                validationError = true;
                 return;
             }
 
-            const assessment = parseFloat(assessRaw);
-            const final = parseFloat(finalRaw);
-            
-            if (assessment < 0 || assessment > 40 || final < 0 || final > 60) {
-                alert(`Error: Invalid bounds found for ${name}. Marks must stay inside 40 and 60 parameters.`);
-                validationFailed = true;
+            const tVal = parseFloat(taste);
+            const asVal = parseFloat(assign);
+            const bVal = parseFloat(book);
+            const atVal = parseFloat(atten);
+            const mVal = parseFloat(mid);
+            const fVal = parseFloat(final);
+
+            if (tVal<0 || tVal>10 || asVal<0 || asVal>10 || bVal<0 || bVal>5 || atVal<0 || atVal>10 || mVal<0 || mVal>25 || fVal<0 || fVal>40) {
+                alert(`Error: Out of bounds scores identified on entry for ${name}.`);
+                validationError = true;
                 return;
             }
 
-            const total = assessment + final;
-            const status = total >= 50 ? "Pass" : "Fail";
+            const totalScore = tVal + asVal + bVal + atVal + mVal + fVal;
+            const status = totalScore >= 50 ? "Pass" : "Fail";
 
-            newRecords.push({ name, assessment, final, total, status });
+            uploadQueue.push(addDoc(collection(db, "sunday_school_marks"), {
+                grade: selectedGrade,
+                name: name,
+                taste: tVal,
+                assignment: asVal,
+                bookMark: bVal,
+                attendance: atVal,
+                midExam: mVal,
+                finalExam: fVal,
+                totalScore: totalScore,
+                status: status,
+                timestamp: new Date()
+            }));
         });
 
-        if (validationFailed) return;
+        if (validationError) return;
+        if (uploadQueue.length === 0) return alert("No valid inputs detected.");
 
-        if (newRecords.length === 0) {
-            alert("No student data found to process.");
-            return;
+        try {
+            await Promise.all(uploadQueue);
+            alert(`Roster entries for ${selectedGrade} uploaded directly into cloud backend!`);
+            container.innerHTML = "";
+            createEntryRows(10);
+            fetchFromCloud();
+        } catch (err) {
+            console.error(err);
+            alert("Database entry writing aborted.");
         }
-
-        // Add to global application state ledger
-        masterLedger = [...masterLedger, ...newRecords];
-
-        // Reset inputs on form
-        form.reset();
-        rows.forEach(row => row.querySelector('.calculated-total').textContent = '0.0');
-
-        // Render Ledger View
-        renderMasterTable();
     });
-
-    function renderMasterTable() {
-        if (masterLedger.length === 0) {
-            masterTableBody.innerHTML = `<tr><td colspan="5" class="empty-state">No permanently saved records in ledger yet. Process form above.</td></tr>`;
-            return;
-        }
-
-        masterTableBody.innerHTML = masterLedger.map(record => `
-            <tr>
-                <td><strong>${record.name}</strong></td>
-                <td>${record.assessment.toFixed(1)}</td>
-                <td>${record.final.toFixed(1)}</td>
-                <td><strong>${record.total.toFixed(1)}</strong></td>
-                <td><span class="badge ${record.status.toLowerCase()}">${record.status}</span></td>
-            </tr>
-        `).join('');
-    }
 </script>
-
 </body>
 </html>
+
 
 
