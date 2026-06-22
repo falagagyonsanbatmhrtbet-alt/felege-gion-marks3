@@ -5,343 +5,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Felege Gion Sunday School Portal</title>
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #0f172a;
-            --accent: #2563eb;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #334155;
-            --border: #e2e8f0;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 0.5rem; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1400px; display: flex; flex-direction: column; gap: 1rem; }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; padding: 1rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: flex; align-items: center; gap: 1rem;
-        }
-
-        .logo-img {
-            width: 60px; height: 60px; border-radius: 50%;
-            background-color: white; object-fit: cover; border: 2px solid white;
-        }
-
-        .header-text h1 { font-size: 1.3rem; font-weight: 600; }
-        .header-text p { font-size: 0.8rem; opacity: 0.8; margin-top: 0.15rem; }
-
-        .card {
-            background: var(--card-bg); padding: 1rem; border-radius: 8px;
-            border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        h2 { font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--secondary); border-bottom: 2px solid var(--border); padding-bottom: 0.25rem; }
-        
-        .config-panel { margin-bottom: 1rem; background: #f1f5f9; padding: 0.75rem; border-radius: 6px; max-width: 260px; }
-        label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--secondary); }
-        select { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; background: white; }
-
-        /* Optimized Spreadsheet Wrapper */
-        .spreadsheet-wrapper {
-            overflow-x: auto;
-            margin-bottom: 1rem;
-        }
-
-        /* Matrix Grid Configuration with Fixed Input Box Widths */
-        .bulk-header-row {
-            display: grid; 
-            grid-template-columns: minmax(160px, 2fr) repeat(6, 50px) 55px 40px; 
-            gap: 0.35rem; margin-bottom: 0.4rem; padding: 0 0.25rem; font-weight: bold; font-size: 0.75rem; text-align: center;
-            align-items: end; min-width: 560px;
-        }
-
-        .student-row {
-            display: grid; 
-            grid-template-columns: minmax(160px, 2fr) repeat(6, 50px) 55px 40px; 
-            gap: 0.35rem; margin-bottom: 0.5rem; background: var(--bg); padding: 0.35rem; border-radius: 6px; align-items: center;
-            min-width: 560px;
-        }
-
-        input { width: 100%; padding: 0.4rem 0.2rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; text-align: center; }
-        input.input-name { text-align: left; padding-left: 0.5rem; }
-        input:focus { border-color: var(--accent); outline: none; background-color: #fff; }
-
-        .calculated-total { font-weight: bold; text-align: center; font-size: 0.85rem; }
-        .actions-bar { display: flex; gap: 0.75rem; margin-top: 1rem; }
-        
-        button { padding: 0.6rem; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
-        .btn-primary { flex: 2; background-color: var(--accent); color: white; }
-        .btn-secondary { flex: 1; background-color: #64748b; color: white; }
-        
-        .btn-remove { background-color: transparent; color: var(--danger); font-size: 1rem; cursor: pointer; display: inline-block; width: 100%; }
-
-        .table-container { overflow-x: auto; margin-top: 1rem; }
-        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem; min-width: 650px; }
-        th, td { padding: 0.5rem 0.35rem; border-bottom: 1px solid var(--border); text-align: center; }
-        th.text-left, td.text-left { text-align: left; }
-        th { background-color: var(--bg); color: var(--secondary); }
-        
-        .badge { font-weight: bold; padding: 0.15rem 0.35rem; border-radius: 4px; font-size: 0.7rem; }
-        .badge.pass { color: var(--success); background: #f0fdf4; }
-        .badge.fail { color: var(--danger); background: #fef2f2; }
-        .empty-state { text-align: center; color: #94a3b8; padding: 1.5rem; }
+        :root { --primary: #1a365d; --secondary: #2b6cb0; --bg: #f7fafc; --text: #2d3748; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        h2 { margin-top: 0; color: var(--primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input[type="text"], input[type="password"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; }
+        button { background: var(--secondary); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: var(--primary); }
+        .hidden { display: none !important; }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        th { background: #edf2f7; color: var(--primary); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .logout-btn { background: #e53e3e; float: right; }
+        .logout-btn:hover { background: #9b2c2c; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <img src="logo.jpg" alt="Sunday School Logo" class="logo-img" onerror="this.style.display='none'">
-        <div class="header-text">
-            <h1>Felege Gion Sunday School</h1>
-            <p>Official Digital Mark Registration Ledger</p>
-        </div>
-    </header>
-
-    <div class="card">
-        <h2>1. Class Selection</h2>
-        <div class="config-panel">
-            <label for="gradeSelect">Grade Level / ክፍል</label>
-            <select id="gradeSelect">
-                <option value="Grade 1">Grade 1</option>
-                <option value="Grade 2">Grade 2</option>
-                <option value="Grade 3">Grade 3</option>
-                <option value="Grade 4">Grade 4</option>
-                <option value="Grade 5">Grade 5</option>
-                <option value="Grade 6">Grade 6</option>
-                <option value="Grade 7">Grade 7</option>
-                <option value="Grade 8">Grade 8</option>
-                <option value="Grade 9">Grade 9</option>
-                <option value="Grade 10">Grade 10</option>
-                <option value="Grade 11">Grade 11</option>
-                <option value="Grade 12">Grade 12</option>
-            </select>
-        </div>
-
-        <h2>2. Roster Mark Sheet Entry</h2>
-        <form id="bulkMarkForm">
-            <div class="spreadsheet-wrapper">
-                <div class="bulk-header-row">
-                    <div style="text-align: left;">Student Name</div>
-                    <div>Taste<br>10%</div>
-                    <div>Asgn<br>10%</div>
-                    <div>Book<br>5%</div>
-                    <div>Att<br>10%</div>
-                    <div>Mid<br>25%</div>
-                    <div>Fin<br>40%</div>
-                    <div>Total<br>100%</div>
-                    <div>Rem</div>
-                </div>
-                <div id="bulkRowsContainer"></div>
+    <div id="authScreen" class="card">
+        <h2>Felege Gion Admin Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Admin Email</label>
+                <input type="text" id="loginEmail" required placeholder="admin@felegegion.com">
             </div>
-            <div class="actions-bar">
-                <button type="button" class="btn-secondary" id="addMoreRowsBtn">+ Add 5 Rows</button>
-                <button type="submit" class="btn-primary" id="submitBtn">Save Marks to Firebase Cloud</button>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" required placeholder="••••••••">
             </div>
+            <button type="submit">Access Dashboard</button>
         </form>
     </div>
 
-    <div class="card table-container">
-        <h2>Cloud Storage Master Ledger Log</h2>
-        <table id="masterRecordsTable">
-            <thead>
-                <tr>
-                    <th>Grade</th>
-                    <th class="text-left">Student Name</th>
-                    <th>Taste (10)</th>
-                    <th>Assign (10)</th>
-                    <th>Book (5)</th>
-                    <th>Atten (10)</th>
-                    <th>Mid (25)</th>
-                    <th>Final (40)</th>
-                    <th>Total (100)</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="masterTableBody">
-                <tr><td colspan="10" class="empty-state">Loading database records...</td></tr>
-            </tbody>
-        </table>
+    <div id="appScreen" class="hidden">
+        <div style="overflow: hidden; margin-bottom: 20px;">
+            <button class="logout-btn" id="logoutBtn">Log Out</button>
+            <h1 style="margin: 0; color: var(--primary);">Felege Gion Sunday School Portal</h1>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Register New Student</h2>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="studentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Grade (1-10)</label>
+                        <select id="studentGrade" required>
+                            <option value="">Select Grade</option>
+                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Student Photo</label>
+                        <input type="file" id="studentPhoto" accept="image/*" required>
+                    </div>
+                    <button type="submit">Generate Record & ID</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Student Records & Continuous Assessment</h2>
+                <div class="form-group">
+                    <label>Filter View By Grade</label>
+                    <select id="gradeFilter">
+                        <option value="All">All Grades</option>
+                    </select>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>System ID</th>
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>Academic Mark</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-    // Your integrated Firebase web credentials
+    // Your Explicit Live Target Credentials
     const firebaseConfig = {
         apiKey: "AIzaSyB4FdrgFQop1WvubMDhANtUcrHWnQ-kWf4",
         authDomain: "sundayschoolportal-a0931.firebaseapp.com",
         projectId: "sundayschoolportal-a0931",
         storageBucket: "sundayschoolportal-a0931.firebasestorage.app",
         messagingSenderId: "964240028485",
-        appId: "1:964240028485:web:655a48afc5bdad0fdbc42c",
-        measurementId: "G-8TNMKQ8LJ9"
+        appId: "1:964240028485:web:59fe14c660638d84dbc42c",
+        measurementId: "G-XK9Y8BMNBV"
     };
 
+    // Core Instantiations
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
     const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    const container = document.getElementById('bulkRowsContainer');
-    const addRowsBtn = document.getElementById('addMoreRowsBtn');
-    const form = document.getElementById('bulkMarkForm');
-    const masterTableBody = document.getElementById('masterTableBody');
-    const gradeSelect = document.getElementById('gradeSelect');
+    // Layout Hook References
+    const authScreen = document.getElementById('authScreen');
+    const appScreen = document.getElementById('appScreen');
+    const loginForm = document.getElementById('loginForm');
+    const registrationForm = document.getElementById('registrationForm');
+    const studentTableBody = document.getElementById('studentTableBody');
+    const gradeFilter = document.getElementById('gradeFilter');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-    function createEntryRows(count) {
-        for (let i = 0; i < count; i++) {
-            const row = document.createElement('div');
-            row.className = 'student-row';
-            row.innerHTML = `
-                <div><input type="text" class="input-name" placeholder="Full Name"></div>
-                <div><input type="number" class="input-taste" min="0" max="10" step="0.5" placeholder="10"></div>
-                <div><input type="number" class="input-assign" min="0" max="10" step="0.5" placeholder="10"></div>
-                <div><input type="number" class="input-book" min="0" max="5" step="0.5" placeholder="5"></div>
-                <div><input type="number" class="input-atten" min="0" max="10" step="0.5" placeholder="10"></div>
-                <div><input type="number" class="input-mid" min="0" max="25" step="0.5" placeholder="25"></div>
-                <div><input type="number" class="input-final" min="0" max="40" step="0.5" placeholder="40"></div>
-                <div class="calculated-total">0.0</div>
-                <div style="text-align: center;"><button type="button" class="btn-remove" title="Subtract row">✖</button></div>
-            `;
-            container.appendChild(row);
-
-            const inputs = row.querySelectorAll('input[type="number"]');
-            const totalDisplay = row.querySelector('.calculated-total');
-            const removeBtn = row.querySelector('.btn-remove');
-
-            function calculateRow() {
-                let total = 0;
-                inputs.forEach(input => {
-                    total += parseFloat(input.value) || 0;
-                });
-                totalDisplay.textContent = total.toFixed(1);
-                totalDisplay.style.color = total >= 50 ? 'var(--success)' : (total > 0 ? 'var(--danger)' : 'var(--text)');
-            }
-
-            inputs.forEach(input => input.addEventListener('input', calculateRow));
-            removeBtn.addEventListener('click', () => { row.remove(); });
-        }
+    // Render loop processing for numeric option blocks
+    const gradeDropdowns = [document.getElementById('studentGrade'), gradeFilter];
+    for(let i=1; i<=10; i++) {
+        gradeDropdowns[0].options.add(new Option(`Grade ${i}`, i));
+        gradeDropdowns[1].options.add(new Option(`Grade ${i}`, i));
     }
 
-    createEntryRows(10);
-    addRowsBtn.addEventListener('click', () => createEntryRows(5));
-
-    async function fetchFromCloud() {
-        try {
-            const q = query(collection(db, "sunday_school_marks"), orderBy("timestamp", "desc"));
-            const querySnapshot = await getDocs(q);
-            if(querySnapshot.empty) {
-                masterTableBody.innerHTML = `<tr><td colspan="10" class="empty-state">No records saved in database yet.</td></tr>`;
-                return;
-            }
-            
-            let output = "";
-            querySnapshot.forEach(doc => {
-                const data = doc.data();
-                output += `
-                    <tr>
-                        <td><strong>${data.grade}</strong></td>
-                        <td class="text-left">${data.name}</td>
-                        <td>${data.taste}</td>
-                        <td>${data.assignment}</td>
-                        <td>${data.bookMark}</td>
-                        <td>${data.attendance}</td>
-                        <td>${data.midExam}</td>
-                        <td>${data.finalExam}</td>
-                        <td><strong>${data.totalScore}</strong></td>
-                        <td><span class="badge ${data.status.toLowerCase()}">${data.status}</span></td>
-                    </tr>
-                `;
-            });
-            masterTableBody.innerHTML = output;
-        } catch (e) {
-            console.error(e);
-            masterTableBody.innerHTML = `<tr><td colspan="10" class="empty-state" style="color:var(--danger)">Failed to synchronize cloud ledger data. Make sure rules are set to test mode.</td></tr>`;
-        }
-    }
-
-    fetchFromCloud();
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const rows = container.querySelectorAll('.student-row');
-        const selectedGrade = gradeSelect.value;
-        let uploadQueue = [];
-        let validationError = false;
-
-        rows.forEach(row => {
-            const name = row.querySelector('.input-name').value.trim();
-            const taste = row.querySelector('.input-taste').value;
-            const assign = row.querySelector('.input-assign').value;
-            const book = row.querySelector('.input-book').value;
-            const atten = row.querySelector('.input-atten').value;
-            const mid = row.querySelector('.input-mid').value;
-            const final = row.querySelector('.input-final').value;
-
-            if (!name && taste==='' && assign==='' && book==='' && atten==='' && mid==='' && final==='') return;
-
-            if (!name || taste==='' || assign==='' || book==='' || atten==='' || mid==='' || final==='') {
-                alert("Error: Please fully complete or subtract incomplete records using the ✖ option.");
-                validationError = true;
-                return;
-            }
-
-            const tVal = parseFloat(taste);
-            const asVal = parseFloat(assign);
-            const bVal = parseFloat(book);
-            const atVal = parseFloat(atten);
-            const mVal = parseFloat(mid);
-            const fVal = parseFloat(final);
-
-            if (tVal<0 || tVal>10 || asVal<0 || asVal>10 || bVal<0 || bVal>5 || atVal<0 || atVal>10 || mVal<0 || mVal>25 || fVal<0 || fVal>40) {
-                alert(`Error: Out of bounds scores identified on entry for ${name}.`);
-                validationError = true;
-                return;
-            }
-
-            const totalScore = tVal + asVal + bVal + atVal + mVal + fVal;
-            const status = totalScore >= 50 ? "Pass" : "Fail";
-
-            uploadQueue.push(addDoc(collection(db, "sunday_school_marks"), {
-                grade: selectedGrade,
-                name: name,
-                taste: tVal,
-                assignment: asVal,
-                bookMark: bVal,
-                attendance: atVal,
-                midExam: mVal,
-                finalExam: fVal,
-                totalScore: totalScore,
-                status: status,
-                timestamp: new Date()
-            }));
-        });
-
-        if (validationError) return;
-        if (uploadQueue.length === 0) return alert("No valid inputs detected.");
-
-        try {
-            await Promise.all(uploadQueue);
-            alert(`Roster entries for ${selectedGrade} uploaded directly into cloud backend!`);
-            container.innerHTML = "";
-            createEntryRows(10);
-            fetchFromCloud();
-        } catch (err) {
-            console.error(err);
-            alert("Database entry writing aborted.");
+    // ==========================================
+    // SECURITY AUTHENTICATION LAYER
+    // ==========================================
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            authScreen.classList.add('hidden');
+            appScreen.classList.remove('hidden');
+            syncStudentDataPipeline();
+        } else {
+            authScreen.classList.remove('hidden');
+            appScreen.classList.add('hidden');
+            studentTableBody.innerHTML = '';
         }
     });
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
+        } catch (error) {
+            alert("Login Failed: " + error.message);
+        }
+    });
+
+    logoutBtn.addEventListener('click', () => signOut(auth));
+
+    // ==========================================
+    // DATA WRITER PIPELINE (STORAGE + FIRESTORE)
+    // ==========================================
+    registrationForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const file = document.getElementById('studentPhoto').files[0];
+        const name = document.getElementById('studentName').value;
+        const grade = document.getElementById('studentGrade').value;
+
+        if(!file) return alert("Photo file payload missing.");
+
+        try {
+            // Write image object to Firebase Storage Bucket
+            const storageRef = ref(storage, `profiles/${Date.now()}_${file.name}`);
+            const snapshot = await uploadBytes(storageRef, file);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            // Link structured student metadata record to Firestore
+            // Mark begins as explicit null per database integrity rules
+            await addDoc(collection(db, "students"), {
+                name: name,
+                grade: parseInt(grade),
+                photoURL: downloadURL,
+                mark: null, 
+                timestamp: new Date()
+            });
+
+            registrationForm.reset();
+            alert("Student registration completed successfully.");
+        } catch (error) {
+            alert("Database Error: " + error.message);
+        }
+    });
+
+    // ==========================================
+    // LIVE BROADCAST STREAM & ENGINE
+    // ==========================================
+    let activeStreamKiller = () => {};
+
+    function syncStudentDataPipeline() {
+        activeStreamKiller(); 
+        const selectedGrade = gradeFilter.value;
+        let queryTarget = collection(db, "students");
+
+        if (selectedGrade !== 'All') {
+            queryTarget = query(collection(db, "students"), where("grade", "==", parseInt(selectedGrade)));
+        }
+
+        // Live Firestore document stream mapping loop
+        activeStreamKiller = onSnapshot(queryTarget, (snapshot) => {
+            studentTableBody.innerHTML = '';
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const id = docSnap.id;
+                const visualId = id.substring(0,6).toUpperCase();
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${data.photoURL || 'https://via.placeholder.com/40'}" class="avatar"></td>
+                    <td><strong>FG-${visualId}</strong></td>
+                    <td>${data.name}</td>
+                    <td>Grade ${data.grade}</td>
+                    <td>
+                        <span id="txt-${id}">${data.mark !== null ? data.mark + '%' : '<em>Unassigned</em>'}</span>
+                        <input type="number" id="input-${id}" class="hidden" min="0" max="100" value="${data.mark || ''}" style="width:60px;">
+                    </td>
+                    <td>
+                        <button id="edit-${id}" onclick="toggleEditState('${id}')">Set Mark</button>
+                        <button id="save-${id}" class="hidden" onclick="commitMarkRecord('${id}')" style="background:#2f855a;">Save</button>
+                    </td>
+                `;
+                studentTableBody.appendChild(tr);
+            });
+        });
+    }
+
+    gradeFilter.addEventListener('change', syncStudentDataPipeline);
+
+    // Global DOM manipulation hooks for dynamically generated rows
+    window.toggleEditState = function(id) {
+        document.getElementById(`txt-${id}`).classList.toggle('hidden');
+        document.getElementById(`input-${id}`).classList.toggle('hidden');
+        document.getElementById(`edit-${id}`).classList.toggle('hidden');
+        document.getElementById(`save-${id}`).classList.toggle('hidden');
+    }
+
+    window.commitMarkRecord = async function(id) {
+        const inputField = document.getElementById(`input-${id}`);
+        if(inputField.value === '') return alert("Field value cannot remain null.");
+        
+        const validatedMark = parseInt(inputField.value);
+        if(validatedMark < 0 || validatedMark > 100) return alert("System requires percentage validation scores (0-100).");
+
+        try {
+            const documentReference = doc(db, "students", id);
+            await updateDoc(documentReference, {
+                mark: validatedMark
+            });
+        } catch(error) {
+            alert("Write sync verification failed: " + error.message);
+        }
+    }
 </script>
 </body>
 </html>
+
 
 
 
