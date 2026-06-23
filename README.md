@@ -3,275 +3,462 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Felege Gion Sunday School Portal</title>
+    <title>Student Registration Admin Dashboard</title>
     <style>
-        :root { --primary: #1a365d; --secondary: #2b6cb0; --bg: #f7fafc; --text: #2d3748; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        .container { max-width: 1100px; margin: 0 auto; }
-        .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        h2 { margin-top: 0; color: var(--primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; }
-        input[type="text"], input[type="password"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; }
-        button { background: var(--secondary); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        button:hover { background: var(--primary); }
-        .hidden { display: none !important; }
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
-        th { background: #edf2f7; color: var(--primary); }
-        .avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-        .logout-btn { background: #e53e3e; float: right; }
-        .logout-btn:hover { background: #9b2c2c; }
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f4f6f9;
+            --text: #333;
+            --border: #dcdde1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Navigation bar */
+        .navbar {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Stats Counter Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent);
+        }
+
+        .stat-card.total { border-left-color: var(--accent); }
+        .stat-card.recent { border-left-color: var(--success); }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Main Content Controls Box */
+        .table-controls {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Table styling */
+        .table-container {
+            background: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #fafbfc;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-view {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .btn-view:hover {
+            background-color: #2980b9;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        /* Full Details Pop-up Modal window */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close-modal:hover { color: #333; }
+
+        .modal h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .detail-section {
+            margin-top: 20px;
+        }
+
+        .detail-section h4 {
+            margin: 0 0 10px 0;
+            color: var(--accent);
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 3px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 20px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item span {
+            display: block;
+        }
+        .detail-item .label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+        .detail-item .value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="authScreen" class="card">
-        <h2>Felege Gion Admin Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label>Admin Email</label>
-                <input type="text" id="loginEmail" required placeholder="admin@felegegion.com">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPassword" required placeholder="••••••••">
-            </div>
-            <button type="submit">Access Dashboard</button>
-        </form>
+    <div class="navbar">
+        <h1>System Administration Panel</h1>
+        <div>EOTC Registration Desk</div>
     </div>
 
-    <div id="appScreen" class="hidden">
-        <div style="overflow: hidden; margin-bottom: 20px;">
-            <button class="logout-btn" id="logoutBtn">Log Out</button>
-            <h1 style="margin: 0; color: var(--primary);">Felege Gion Sunday School Portal</h1>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="card">
-                <h2>Register New Student</h2>
-                <form id="registrationForm">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="studentName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Grade (1-10)</label>
-                        <select id="studentGrade" required>
-                            <option value="">Select Grade</option>
-                            </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Student Photo</label>
-                        <input type="file" id="studentPhoto" accept="image/*" required>
-                    </div>
-                    <button type="submit">Generate Record & ID</button>
-                </form>
-            </div>
-
-            <div class="card">
-                <h2>Student Records & Continuous Assessment</h2>
-                <div class="form-group">
-                    <label>Filter View By Grade</label>
-                    <select id="gradeFilter">
-                        <option value="All">All Grades</option>
-                    </select>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Photo</th>
-                            <th>System ID</th>
-                            <th>Name</th>
-                            <th>Grade</th>
-                            <th>Academic Mark</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentTableBody">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
-    // Your Explicit Live Target Credentials
-    const firebaseConfig = {
-        apiKey: "AIzaSyB4FdrgFQop1WvubMDhANtUcrHWnQ-kWf4",
-        authDomain: "sundayschoolportal-a0931.firebaseapp.com",
-        projectId: "sundayschoolportal-a0931",
-        storageBucket: "sundayschoolportal-a0931.firebasestorage.app",
-        messagingSenderId: "964240028485",
-        appId: "1:964240028485:web:59fe14c660638d84dbc42c",
-        measurementId: "G-XK9Y8BMNBV"
-    };
-
-    // Core Instantiations
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    // Layout Hook References
-    const authScreen = document.getElementById('authScreen');
-    const appScreen = document.getElementById('appScreen');
-    const loginForm = document.getElementById('loginForm');
-    const registrationForm = document.getElementById('registrationForm');
-    const studentTableBody = document.getElementById('studentTableBody');
-    const gradeFilter = document.getElementById('gradeFilter');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    // Render loop processing for numeric option blocks
-    const gradeDropdowns = [document.getElementById('studentGrade'), gradeFilter];
-    for(let i=1; i<=10; i++) {
-        gradeDropdowns[0].options.add(new Option(`Grade ${i}`, i));
-        gradeDropdowns[1].options.add(new Option(`Grade ${i}`, i));
-    }
-
-    // ==========================================
-    // SECURITY AUTHENTICATION LAYER
-    // ==========================================
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            authScreen.classList.add('hidden');
-            appScreen.classList.remove('hidden');
-            syncStudentDataPipeline();
-        } else {
-            authScreen.classList.remove('hidden');
-            appScreen.classList.add('hidden');
-            studentTableBody.innerHTML = '';
-        }
-    });
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
-        } catch (error) {
-            alert("Login Failed: " + error.message);
-        }
-    });
-
-    logoutBtn.addEventListener('click', () => signOut(auth));
-
-    // ==========================================
-    // DATA WRITER PIPELINE (STORAGE + FIRESTORE)
-    // ==========================================
-    registrationForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const file = document.getElementById('studentPhoto').files[0];
-        const name = document.getElementById('studentName').value;
-        const grade = document.getElementById('studentGrade').value;
-
-        if(!file) return alert("Photo file payload missing.");
-
-        try {
-            // Write image object to Firebase Storage Bucket
-            const storageRef = ref(storage, `profiles/${Date.now()}_${file.name}`);
-            const snapshot = await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(snapshot.ref);
-
-            // Link structured student metadata record to Firestore
-            // Mark begins as explicit null per database integrity rules
-            await addDoc(collection(db, "students"), {
-                name: name,
-                grade: parseInt(grade),
-                photoURL: downloadURL,
-                mark: null, 
-                timestamp: new Date()
-            });
-
-            registrationForm.reset();
-            alert("Student registration completed successfully.");
-        } catch (error) {
-            alert("Database Error: " + error.message);
-        }
-    });
-
-    // ==========================================
-    // LIVE BROADCAST STREAM & ENGINE
-    // ==========================================
-    let activeStreamKiller = () => {};
-
-    function syncStudentDataPipeline() {
-        activeStreamKiller(); 
-        const selectedGrade = gradeFilter.value;
-        let queryTarget = collection(db, "students");
-
-        if (selectedGrade !== 'All') {
-            queryTarget = query(collection(db, "students"), where("grade", "==", parseInt(selectedGrade)));
-        }
-
-        // Live Firestore document stream mapping loop
-        activeStreamKiller = onSnapshot(queryTarget, (snapshot) => {
-            studentTableBody.innerHTML = '';
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                const id = docSnap.id;
-                const visualId = id.substring(0,6).toUpperCase();
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><img src="${data.photoURL || 'https://via.placeholder.com/40'}" class="avatar"></td>
-                    <td><strong>FG-${visualId}</strong></td>
-                    <td>${data.name}</td>
-                    <td>Grade ${data.grade}</td>
-                    <td>
-                        <span id="txt-${id}">${data.mark !== null ? data.mark + '%' : '<em>Unassigned</em>'}</span>
-                        <input type="number" id="input-${id}" class="hidden" min="0" max="100" value="${data.mark || ''}" style="width:60px;">
-                    </td>
-                    <td>
-                        <button id="edit-${id}" onclick="toggleEditState('${id}')">Set Mark</button>
-                        <button id="save-${id}" class="hidden" onclick="commitMarkRecord('${id}')" style="background:#2f855a;">Save</button>
-                    </td>
-                `;
-                studentTableBody.appendChild(tr);
-            });
-        });
-    }
-
-    gradeFilter.addEventListener('change', syncStudentDataPipeline);
-
-    // Global DOM manipulation hooks for dynamically generated rows
-    window.toggleEditState = function(id) {
-        document.getElementById(`txt-${id}`).classList.toggle('hidden');
-        document.getElementById(`input-${id}`).classList.toggle('hidden');
-        document.getElementById(`edit-${id}`).classList.toggle('hidden');
-        document.getElementById(`save-${id}`).classList.toggle('hidden');
-    }
-
-    window.commitMarkRecord = async function(id) {
-        const inputField = document.getElementById(`input-${id}`);
-        if(inputField.value === '') return alert("Field value cannot remain null.");
+    <div class="container">
         
-        const validatedMark = parseInt(inputField.value);
-        if(validatedMark < 0 || validatedMark > 100) return alert("System requires percentage validation scores (0-100).");
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <h3>Total Registrations</h3>
+                <div class="value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card recent">
+                <h3>Latest Update</h3>
+                <div class="value" id="lastUpdateDate">--</div>
+            </div>
+        </div>
 
-        try {
-            const documentReference = doc(db, "students", id);
-            await updateDoc(documentReference, {
-                mark: validatedMark
-            });
-        } catch(error) {
-            alert("Write sync verification failed: " + error.message);
+        <div class="table-controls">
+            <h3 style="margin:0; color: var(--primary);">Student Profiles Base</h3>
+            <input type="text" id="searchInput" class="search-box" placeholder="Search by name..." onkeyup="filterTable()">
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Baptism/Christian Name</th>
+                        <th>Age/Gender</th>
+                        <th>Assigned Grade</th>
+                        <th>Submission Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <tr><td colspan="6" class="no-data">Connecting to secure storage cloud matrix...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="m_fullname">Student Profile Name</h2>
+            
+            <div class="detail-section">
+                <h4>Primary Student Information</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Christian Name</span><span class="value" id="m_christian"></span></div>
+                    <div class="detail-item"><span class="label">Date of Birth</span><span class="value" id="m_dob"></span></div>
+                    <div class="detail-item"><span class="label">Age / Gender</span><span class="value" id="m_age_gender"></span></div>
+                    <div class="detail-item"><span class="label">Confessor Priest (Spiritual Father)</span><span class="value" id="m_spiritual"></span></div>
+                    <div class="detail-item"><span class="label">Phone Line</span><span class="value" id="m_phone"></span></div>
+                    <div class="detail-item"><span class="label">Academic Level Info</span><span class="value" id="m_acad"></span></div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h4>Residential Coordinates</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Subcity / Woreda</span><span class="value" id="m_location"></span></div>
+                    <div class="detail-item"><span class="label">House Unit Identification</span><span class="value" id="m_house"></span></div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h4>Guardian Reference Framework</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Guardian Full Name</span><span class="value" id="m_g_name"></span></div>
+                    <div class="detail-item"><span class="label">Relationship Link</span><span class="value" id="m_g_rel"></span></div>
+                    <div class="detail-item"><span class="label">Contact Line</span><span class="value" id="m_g_phone"></span></div>
+                </div>
+            </div>
+            
+             <div class="detail-section">
+                <h4>System Metadata Log</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Assigned Sunday School Class</span><span class="value" id="m_class"></span></div>
+                    <div class="detail-item"><span class="label">Registrar Representative</span><span class="value" id="m_registrar"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Global dataset placeholder array for dynamic filtering/searching actions
+        let allStudents = [];
+
+        // 1. YOUR FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize App instances
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch dataset collection sequence loop
+        async function loadAdminDashboardData() {
+            const tableBody = document.getElementById('adminTableBody');
+            
+            try {
+                // Read configurations pull structured query metrics ordered by submission timestamp
+                const q = query(collection(db, "students"), orderBy("submittedAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                tableBody.innerHTML = "";
+                allStudents = []; // Wipe fresh local buffer array
+
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="no-data">No registrations discovered within current database node framework.</td></tr>`;
+                    return;
+                }
+
+                let counter = 0;
+
+                querySnapshot.forEach((doc) => {
+                    counter++;
+                    const id = doc.id;
+                    const data = doc.data();
+                    
+                    // Construct tracking array elements holding item data package
+                    const record = { id, ...data };
+                    allStudents.push(record);
+
+                    // Calculations parameters verification parsing string layouts formatting
+                    const fullname = `${data.firstName || ''} ${data.fatherName || ''} ${data.grandFatherName || ''}`.trim() || 'Unnamed Profile';
+                    const ageGender = `${data.age || '—'} / ${data.gender || '—'}`;
+                    const targetGrade = data.grade ? `Grade ${data.grade}` : 'Unassigned';
+                    const stamp = data.submittedAt ? new Date(data.submittedAt.seconds * 1000).toLocaleDateString() : 'System Default';
+
+                    const rowHTML = `
+                        <tr data-id="${id}">
+                            <td><strong>${fullname}</strong></td>
+                            <td>${data.christianName || '—'}</td>
+                            <td>${ageGender}</td>
+                            <td><span style="background:#e3f2fd; color:#1e88e5; padding:3px 8px; border-radius:12px; font-size:0.85rem; font-weight:600;">${targetGrade}</span></td>
+                            <td>${stamp}</td>
+                            <td><button class="btn-view" onclick="showStudentDetails('${id}')">View Details</button></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += rowHTML;
+                });
+
+                // Update basic stats box figures counters on top bar grids
+                document.getElementById('totalCount').innerText = counter;
+                if(allStudents[0] && allStudents[0].submittedAt) {
+                    document.getElementById('lastUpdateDate').innerText = new Date(allStudents[0].submittedAt.seconds * 1000).toLocaleDateString();
+                }
+
+            } catch (err) {
+                console.error("Critical failure during collection data sync fetch loop: ", err);
+                tableBody.innerHTML = `<tr><td colspan="6" class="no-data" style="color:red;">Error handshake secure runtime: credentials verification or security rules violation.</td></tr>`;
+            }
         }
-    }
-</script>
+
+        // Expose lookup function utility properties explicitly directly inside standard DOM global window module space
+        window.showStudentDetails = function(studentId) {
+            const student = allStudents.find(s => s.id === studentId);
+            if(!student) return alert("System structural node lookup anomaly occurred.");
+
+            // Bind values directly down into matching targets strings elements paths mapping identifiers
+            document.getElementById('m_fullname').innerText = `${student.firstName || ''} ${student.fatherName || ''} ${student.grandFatherName || ''}`.toUpperCase();
+            document.getElementById('m_christian').innerText = student.christianName || '—';
+            document.getElementById('m_dob').innerText = student.dob || '—';
+            document.getElementById('m_age_gender').innerText = `${student.age || '—'} Yrs Old / (${student.gender || '—'})`;
+            document.getElementById('m_spiritual').innerText = student.spiritualFather || '—';
+            document.getElementById('m_phone').innerText = student.studentPhone || '—';
+            document.getElementById('m_acad').innerText = student.academicGrade ? `Academic Level: ${student.academicGrade}` : '—';
+            
+            document.getElementById('m_location').innerText = `Subcity: ${student.subCity || '—'} | Woreda: ${student.woreda || '—'}`;
+            document.getElementById('m_house').innerText = student.houseNo || '—';
+            
+            document.getElementById('m_g_name').innerText = student.guardianName || '—';
+            document.getElementById('m_g_rel').innerText = student.guardianRelationship || '—';
+            document.getElementById('m_g_phone').innerText = student.guardianPhone || '—';
+            
+            document.getElementById('m_class').innerText = student.grade ? `Assigned Level Group: Grade ${student.grade}` : '—';
+            document.getElementById('m_registrar').innerText = student.registeredBy || 'System Portal Admin';
+
+            // Launch visibility screen
+            document.getElementById('detailsModal').style.display = 'flex';
+        }
+
+        // Kick off loop sequence launch lifecycle executions hooks engine
+        loadAdminDashboardData();
+    </script>
+
+    <script>
+        // Modal closure functions utils scripts
+        function closeModal() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
+        // Close when clicking outside modal logic box layout frame space 
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailsModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Interactive filtering dynamic search routing loop UI utility
+        function filterTable() {
+            const input = document.getElementById("searchInput").value.toUpperCase();
+            const rows = document.getElementById("adminTableBody").getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                const nameCell = rows[i].getElementsByTagName("td")[0];
+                if (nameCell) {
+                    const txtValue = nameCell.textContent || nameCell.innerText;
+                    if (txtValue.toUpperCase().indexOf(input) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-
