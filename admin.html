@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Admin Dashboard</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f4f6f9;
+            --text: #333;
+            --border: #dcdde1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Navigation bar */
+        .navbar {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Stats Counter Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent);
+        }
+
+        .stat-card.total { border-left-color: var(--accent); }
+        .stat-card.recent { border-left-color: var(--success); }
+
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Main Content Controls Box */
+        .table-controls {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Table styling */
+        .table-container {
+            background: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #fafbfc;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-view {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .btn-view:hover {
+            background-color: #2980b9;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        /* Full Details Pop-up Modal window */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close-modal:hover { color: #333; }
+
+        .modal h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .detail-section {
+            margin-top: 20px;
+        }
+
+        .detail-section h4 {
+            margin: 0 0 10px 0;
+            color: var(--accent);
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 3px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 20px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item span {
+            display: block;
+        }
+        .detail-item .label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+        .detail-item .value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>System Administration Panel</h1>
+        <div>EOTC Registration Desk</div>
+    </div>
+
+    <div class="container">
+        
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <h3>Total Registrations</h3>
+                <div class="value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card recent">
+                <h3>Latest Update</h3>
+                <div class="value" id="lastUpdateDate">--</div>
+            </div>
+        </div>
+
+        <div class="table-controls">
+            <h3 style="margin:0; color: var(--primary);">Student Profiles Base</h3>
+            <input type="text" id="searchInput" class="search-box" placeholder="Search by name..." onkeyup="filterTable()">
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Baptism/Christian Name</th>
+                        <th>Age/Gender</th>
+                        <th>Assigned Grade</th>
+                        <th>Submission Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <tr><td colspan="6" class="no-data">Connecting to secure storage cloud matrix...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="m_fullname">Student Profile Name</h2>
+            
+            <div class="detail-section">
+                <h4>Primary Student Information</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Christian Name</span><span class="value" id="m_christian"></span></div>
+                    <div class="detail-item"><span class="label">Date of Birth</span><span class="value" id="m_dob"></span></div>
+                    <div class="detail-item"><span class="label">Age / Gender</span><span class="value" id="m_age_gender"></span></div>
+                    <div class="detail-item"><span class="label">Confessor Priest (Spiritual Father)</span><span class="value" id="m_spiritual"></span></div>
+                    <div class="detail-item"><span class="label">Phone Line</span><span class="value" id="m_phone"></span></div>
+                    <div class="detail-item"><span class="label">Academic Level Info</span><span class="value" id="m_acad"></span></div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h4>Residential Coordinates</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Subcity / Woreda</span><span class="value" id="m_location"></span></div>
+                    <div class="detail-item"><span class="label">House Unit Identification</span><span class="value" id="m_house"></span></div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h4>Guardian Reference Framework</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Guardian Full Name</span><span class="value" id="m_g_name"></span></div>
+                    <div class="detail-item"><span class="label">Relationship Link</span><span class="value" id="m_g_rel"></span></div>
+                    <div class="detail-item"><span class="label">Contact Line</span><span class="value" id="m_g_phone"></span></div>
+                </div>
+            </div>
+            
+             <div class="detail-section">
+                <h4>System Metadata Log</h4>
+                <div class="detail-grid">
+                    <div class="detail-item"><span class="label">Assigned Sunday School Class</span><span class="value" id="m_class"></span></div>
+                    <div class="detail-item"><span class="label">Registrar Representative</span><span class="value" id="m_registrar"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Global dataset placeholder array for dynamic filtering/searching actions
+        let allStudents = [];
+
+        // 1. YOUR FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize App instances
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch dataset collection sequence loop
+        async function loadAdminDashboardData() {
+            const tableBody = document.getElementById('adminTableBody');
+            
+            try {
+                // Read configurations pull structured query metrics ordered by submission timestamp
+                const q = query(collection(db, "students"), orderBy("submittedAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                tableBody.innerHTML = "";
+                allStudents = []; // Wipe fresh local buffer array
+
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="no-data">No registrations discovered within current database node framework.</td></tr>`;
+                    return;
+                }
+
+                let counter = 0;
+
+                querySnapshot.forEach((doc) => {
+                    counter++;
+                    const id = doc.id;
+                    const data = doc.data();
+                    
+                    // Construct tracking array elements holding item data package
+                    const record = { id, ...data };
+                    allStudents.push(record);
+
+                    // Calculations parameters verification parsing string layouts formatting
+                    const fullname = `${data.firstName || ''} ${data.fatherName || ''} ${data.grandFatherName || ''}`.trim() || 'Unnamed Profile';
+                    const ageGender = `${data.age || '—'} / ${data.gender || '—'}`;
+                    const targetGrade = data.grade ? `Grade ${data.grade}` : 'Unassigned';
+                    const stamp = data.submittedAt ? new Date(data.submittedAt.seconds * 1000).toLocaleDateString() : 'System Default';
+
+                    const rowHTML = `
+                        <tr data-id="${id}">
+                            <td><strong>${fullname}</strong></td>
+                            <td>${data.christianName || '—'}</td>
+                            <td>${ageGender}</td>
+                            <td><span style="background:#e3f2fd; color:#1e88e5; padding:3px 8px; border-radius:12px; font-size:0.85rem; font-weight:600;">${targetGrade}</span></td>
+                            <td>${stamp}</td>
+                            <td><button class="btn-view" onclick="showStudentDetails('${id}')">View Details</button></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += rowHTML;
+                });
+
+                // Update basic stats box figures counters on top bar grids
+                document.getElementById('totalCount').innerText = counter;
+                if(allStudents[0] && allStudents[0].submittedAt) {
+                    document.getElementById('lastUpdateDate').innerText = new Date(allStudents[0].submittedAt.seconds * 1000).toLocaleDateString();
+                }
+
+            } catch (err) {
+                console.error("Critical failure during collection data sync fetch loop: ", err);
+                tableBody.innerHTML = `<tr><td colspan="6" class="no-data" style="color:red;">Error handshake secure runtime: credentials verification or security rules violation.</td></tr>`;
+            }
+        }
+
+        // Expose lookup function utility properties explicitly directly inside standard DOM global window module space
+        window.showStudentDetails = function(studentId) {
+            const student = allStudents.find(s => s.id === studentId);
+            if(!student) return alert("System structural node lookup anomaly occurred.");
+
+            // Bind values directly down into matching targets strings elements paths mapping identifiers
+            document.getElementById('m_fullname').innerText = `${student.firstName || ''} ${student.fatherName || ''} ${student.grandFatherName || ''}`.toUpperCase();
+            document.getElementById('m_christian').innerText = student.christianName || '—';
+            document.getElementById('m_dob').innerText = student.dob || '—';
+            document.getElementById('m_age_gender').innerText = `${student.age || '—'} Yrs Old / (${student.gender || '—'})`;
+            document.getElementById('m_spiritual').innerText = student.spiritualFather || '—';
+            document.getElementById('m_phone').innerText = student.studentPhone || '—';
+            document.getElementById('m_acad').innerText = student.academicGrade ? `Academic Level: ${student.academicGrade}` : '—';
+            
+            document.getElementById('m_location').innerText = `Subcity: ${student.subCity || '—'} | Woreda: ${student.woreda || '—'}`;
+            document.getElementById('m_house').innerText = student.houseNo || '—';
+            
+            document.getElementById('m_g_name').innerText = student.guardianName || '—';
+            document.getElementById('m_g_rel').innerText = student.guardianRelationship || '—';
+            document.getElementById('m_g_phone').innerText = student.guardianPhone || '—';
+            
+            document.getElementById('m_class').innerText = student.grade ? `Assigned Level Group: Grade ${student.grade}` : '—';
+            document.getElementById('m_registrar').innerText = student.registeredBy || 'System Portal Admin';
+
+            // Launch visibility screen
+            document.getElementById('detailsModal').style.display = 'flex';
+        }
+
+        // Kick off loop sequence launch lifecycle executions hooks engine
+        loadAdminDashboardData();
+    </script>
+
+    <script>
+        // Modal closure functions utils scripts
+        function closeModal() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
+        // Close when clicking outside modal logic box layout frame space 
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailsModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Interactive filtering dynamic search routing loop UI utility
+        function filterTable() {
+            const input = document.getElementById("searchInput").value.toUpperCase();
+            const rows = document.getElementById("adminTableBody").getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                const nameCell = rows[i].getElementsByTagName("td")[0];
+                if (nameCell) {
+                    const txtValue = nameCell.textContent || nameCell.innerText;
+                    if (txtValue.toUpperCase().indexOf(input) > -1) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCNFxZyWQxSiDCbmyzrUPg6xrY3jNocRoY",
+    authDomain: "registration-form-40803.firebaseapp.com",
+    projectId: "registration-form-40803",
+    storageBucket: "registration-form-40803.firebasestorage.app",
+    messagingSenderId: "890108667929",
+    appId: "1:890108667929:web:c21edfe00c5ed99186a288",
+    measurementId: "G-3KZ4LXDGY3"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+</body>
+</html>
